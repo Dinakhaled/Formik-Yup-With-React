@@ -4,3 +4,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.errorMessage {
+  color: #ff4d4f;
+}
