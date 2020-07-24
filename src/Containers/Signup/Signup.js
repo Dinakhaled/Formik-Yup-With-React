@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Input, Switch, Space, Button } from 'antd';
-import { Formik, Form, ErrorMessage, Field } from 'formik';
+import { Switch, Space, Button } from 'antd';
+import { Formik, ErrorMessage, Field } from 'formik';
+import { Form, Input } from 'formik-antd';
 import * as yup from 'yup';
 
 class Signup extends Component {
@@ -19,7 +20,7 @@ class Signup extends Component {
     confirmPassword: yup.string()
       .min(6, 'Password is too short.')
       .max(10, 'Password is too long.')
-      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .oneOf([yup.ref('password')], 'Passwords must match')
       .required('This field is required.'),
   });
 
@@ -29,7 +30,7 @@ class Signup extends Component {
         <h1>Sign Up</h1>
       <Formik
           initialValues={{
-          fullName: 'Dina Elghndour', 
+          fullName: '', 
           email: '',  
           password: '',
           confirmPassword: ''
@@ -43,17 +44,17 @@ class Signup extends Component {
           <Form>
             <Space direction="vertical" style={{width: '100%'}}>
               <label>Full Name</label>
-              <Input onChange={handleChange} onBlur={handleBlur} name='fullName' value={values.fullName} />
-              <span className='errorMessage'>{errors.fullName && touched.fullName && errors.fullName}</span>
+              <Input name='fullName' />
+              <ErrorMessage name='fullName' />
               <label>Email</label>
-              <Input onChange={handleChange} onBlur={handleBlur} name='email' value={values.email} />
-              <span className='errorMessage'>{errors.email && touched.email && errors.email}</span>
+              <Input name='email' value={values.email} />
+              <ErrorMessage name='email' />
               <label>Password</label>
-              <Input onChange={handleChange} onBlur={handleBlur} name='password' />
-              <span className='errorMessage'>{errors.password && touched.password && errors.password}</span>
+              <Input name='password' />
+              <ErrorMessage name='password' />
               <label>Confirm Password</label>
-              <Input onChange={handleChange} onBlur={handleBlur} name='confirmPassword' />
-              <span className='errorMessage'>{errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}</span>
+              <Input name='confirmPassword' />
+              <ErrorMessage name='confirmPassword' />
               <Button htmlType='submit' style={{textAlign: 'center', width: '100%'}} type='primary'>Sign up</Button>
             </Space>
           </Form>
