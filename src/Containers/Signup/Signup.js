@@ -13,9 +13,14 @@ class Signup extends Component {
     fullName: yup.string().required('This field is required.'), 
     email: yup.string().email().required('This field is required.'), 
     password: yup.string()
-        .min(6, 'Password is too short.')
-        .max(10, 'Password is too long.')
-        .required('This field is required.')
+      .min(6, 'Password is too short.')
+      .max(10, 'Password is too long.')
+      .required('This field is required.'),
+    confirmPassword: yup.string()
+      .min(6, 'Password is too short.')
+      .max(10, 'Password is too long.')
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .required('This field is required.'),
   });
 
   render() { 
@@ -24,38 +29,31 @@ class Signup extends Component {
         <h1>Sign Up</h1>
       <Formik
           initialValues={{
-          fullName: '', 
+          fullName: 'Dina Elghndour', 
           email: '',  
-          password: ''
+          password: '',
+          confirmPassword: ''
         }}
         validationSchema={this.SignupSchema}
         onSubmit={values => {
           console.log(values);
         }}
       >
-      {({errors, handleChange, handleBlur, touched}) => (
+      {({errors, handleChange, handleBlur, touched, values}) => (
           <Form>
             <Space direction="vertical" style={{width: '100%'}}>
               <label>Full Name</label>
-              {/* <Input onChange={handleChange} onBlur={handleBlur} name='fullName' /> */}
-              <Field name="fullName" component={Input} />
-              <ErrorMessage name="fullName">
-                {errMsg => <span className="errorMessage">{errMsg}</span>}
-              </ErrorMessage>
+              <Input onChange={handleChange} onBlur={handleBlur} name='fullName' value={values.fullName} />
+              <span className='errorMessage'>{errors.fullName && touched.fullName && errors.fullName}</span>
               <label>Email</label>
-              <Input onChange={handleChange} onBlur={handleBlur} name='email' />
-              <ErrorMessage name="email">
-                {errMsg => <span className="errorMessage">{errMsg}</span>}
-              </ErrorMessage>
+              <Input onChange={handleChange} onBlur={handleBlur} name='email' value={values.email} />
+              <span className='errorMessage'>{errors.email && touched.email && errors.email}</span>
               <label>Password</label>
               <Input onChange={handleChange} onBlur={handleBlur} name='password' />
-              <ErrorMessage name="password">
-                {errMsg => <span className="errorMessage">{errMsg}</span>}
-              </ErrorMessage>
+              <span className='errorMessage'>{errors.password && touched.password && errors.password}</span>
               <label>Confirm Password</label>
-              <Input onChange={handleChange} />
-              <label>Are you student?</label>
-              <Switch onChange={handleChange} defaultChecked/>
+              <Input onChange={handleChange} onBlur={handleBlur} name='confirmPassword' />
+              <span className='errorMessage'>{errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}</span>
               <Button htmlType='submit' style={{textAlign: 'center', width: '100%'}} type='primary'>Sign up</Button>
             </Space>
           </Form>
